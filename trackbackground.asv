@@ -337,11 +337,9 @@ for istr=1:length(cfile{1})
         break;
     end
 end
-if strfind(cfile{1}{indcr}, fdname)
-    imgflname=cfile{1}{indcr};
-else
-    imgflname=[fdname, cfile{1}{indcr}];
-end
+
+imgflname=cfile{1}{indcr};
+img
 img=double(imread(imgflname));
 hold(handles.axes1, 'on');
     delete(findall(handles.axes1, 'Type', 'Patch'));
@@ -512,13 +510,10 @@ if handles.statstage
             str = ls([fdname, sprintf('*%05d.*', indcur-1)]);
         end
     end
+    str
     
-    if ~isempty(str)
-        cfile = textscan(str, '%[^\n]', 1);
-        imgflname=cfile{1}{1};
-    else
-        imgflname=[];
-    end
+    cfile = textscan(str, '%[^\n]', 1);
+    imgflname=cfile{1}{1};
     handles=guidata(hObject);
  
     if isempty(handles.img0)
@@ -555,6 +550,7 @@ if handles.statstage
     handles.vdisp=[handles.vdisp; [indcur, vdisp]];
     handles.img0=img0;
     guidata(hObject, handles);    
+    imwrite(img0/max(img0(:)), '~/Downloads/imgmask.jpg');
 else
     vdisp=[]; 
     if ~isempty(handles.vdisp)
